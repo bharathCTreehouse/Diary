@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private(set) var persistentContainer: NSPersistentContainer!
+
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -42,5 +45,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+
+
+extension AppDelegate {
+    
+   @discardableResult func configuredPersistentContainer() throws -> NSPersistentContainer {
+        
+        var creationFailed: Bool = false
+        
+        if persistentContainer == nil {
+            
+            persistentContainer = NSPersistentContainer(name: "Diary")
+            persistentContainer.loadPersistentStores(completionHandler: { (storeDesc: NSPersistentStoreDescription, error: Error?) -> Void in
+                
+                if let error = error {
+                    
+                    print("Failed to create core data stack: \(error.localizedDescription)")
+                    creationFailed = true
+                }
+            })
+        }
+        
+        if creationFailed == true {
+            throw CoreDataError.stackCreationFailure
+        }
+        else {
+            return persistentContainer
+        }
+        
+    }
+    
+    func persistentContainerViewContext() throws -> NSManagedObjectContext {
+        
+        do {
+            try self.configuredPersistentContainer()
+            return self.persistentContainer.viewContext
+        }
+        catch ( _ as CoreDataError) {
+            throw CoreDataError.viewContextCreationFailure
+        }
+        catch {
+           throw CoreDataError.unknownError
+        }
+        
+    }
+    
 }
 
