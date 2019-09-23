@@ -20,8 +20,8 @@
 		8E97CAFC2337726C00458968 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E97CAFB2337726C00458968 /* DiaryDetailViewController.swift */; };
 		8E97CAFF23379AE600458968 /* DiaryUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E97CAFE23379AE600458968 /* DiaryUpdateViewController.swift */; };
 		8E97CB012337D07F00458968 /* DiaryDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E97CB002337D07F00458968 /* DiaryDetailViewController.xib */; };
-		8E97CB042337F1BD00458968 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E97CB022337F1BD00458968 /* TestViewController.swift */; };
-		8E97CB052337F1BD00458968 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E97CB032337F1BD00458968 /* TestViewController.xib */; };
+		8E9994842338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9994832338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift */; };
+		8E9994872339505F0022E28C /* FetchedResultsControllerUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9994862339505F0022E28C /* FetchedResultsControllerUtilities.swift */; };
 		8E9A122B2328219E00947B33 /* Diary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A12292328219E00947B33 /* Diary.xcdatamodeld */; };
 		8EDD2C2F23366E4400EB4738 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDD2C2E23366E4400EB4738 /* CoreDataError.swift */; };
 		8EDD2C3523369E2200EB4738 /* DiaryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDD2C3323369E2200EB4738 /* DiaryListTableViewCell.swift */; };
@@ -44,8 +44,8 @@
 		8E97CAFB2337726C00458968 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		8E97CAFE23379AE600458968 /* DiaryUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryUpdateViewController.swift; sourceTree = "<group>"; };
 		8E97CB002337D07F00458968 /* DiaryDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryDetailViewController.xib; sourceTree = "<group>"; };
-		8E97CB022337F1BD00458968 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
-		8E97CB032337F1BD00458968 /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		8E9994832338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryUpdateBarButtonItemConfigurer.swift; sourceTree = "<group>"; };
+		8E9994862339505F0022E28C /* FetchedResultsControllerUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsControllerUtilities.swift; sourceTree = "<group>"; };
 		8E9A122A2328219E00947B33 /* Diary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Diary.xcdatamodel; sourceTree = "<group>"; };
 		8EDD2C2E23366E4400EB4738 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		8EDD2C3323369E2200EB4738 /* DiaryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListTableViewCell.swift; sourceTree = "<group>"; };
@@ -82,6 +82,7 @@
 		8E7CB6A523281F1F00384D41 /* Diary */ = {
 			isa = PBXGroup;
 			children = (
+				8E99948523394FFD0022E28C /* Misc */,
 				8E97CAFD23379A8C00458968 /* Common */,
 				8EDD2C32233679D200EB4738 /* Detail */,
 				8EDD2C31233679C800EB4738 /* List */,
@@ -100,8 +101,17 @@
 			isa = PBXGroup;
 			children = (
 				8E97CAFE23379AE600458968 /* DiaryUpdateViewController.swift */,
+				8E9994832338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		8E99948523394FFD0022E28C /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				8E9994862339505F0022E28C /* FetchedResultsControllerUtilities.swift */,
+			);
+			name = Misc;
 			sourceTree = "<group>";
 		};
 		8EDD2C30233677A700EB4738 /* CoreData */ = {
@@ -132,8 +142,6 @@
 			children = (
 				8E97CAFB2337726C00458968 /* DiaryDetailViewController.swift */,
 				8E97CB002337D07F00458968 /* DiaryDetailViewController.xib */,
-				8E97CB022337F1BD00458968 /* TestViewController.swift */,
-				8E97CB032337F1BD00458968 /* TestViewController.xib */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -200,7 +208,6 @@
 				8E7CB6AE23281F2200384D41 /* Assets.xcassets in Resources */,
 				8E97CB012337D07F00458968 /* DiaryDetailViewController.xib in Resources */,
 				8E7CB6AC23281F1F00384D41 /* Main.storyboard in Resources */,
-				8E97CB052337F1BD00458968 /* TestViewController.xib in Resources */,
 				8EDD2C3623369E2200EB4738 /* DiaryListTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,9 +222,10 @@
 				8E97CAF923375A2700458968 /* Diary+CoreDataClass.swift in Sources */,
 				8E9A122B2328219E00947B33 /* Diary.xcdatamodeld in Sources */,
 				8E97CAF723375A2700458968 /* Photo+CoreDataClass.swift in Sources */,
+				8E9994872339505F0022E28C /* FetchedResultsControllerUtilities.swift in Sources */,
+				8E9994842338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift in Sources */,
 				8E7CB6A923281F1F00384D41 /* ViewController.swift in Sources */,
 				8E7CB6A723281F1F00384D41 /* AppDelegate.swift in Sources */,
-				8E97CB042337F1BD00458968 /* TestViewController.swift in Sources */,
 				8E97CAFF23379AE600458968 /* DiaryUpdateViewController.swift in Sources */,
 				8E97CAFA23375A2700458968 /* Diary+CoreDataProperties.swift in Sources */,
 				8EDD2C3523369E2200EB4738 /* DiaryListTableViewCell.swift in Sources */,

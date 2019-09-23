@@ -13,7 +13,7 @@ import CoreData
 
 class DiaryListTableView: UITableView {
     
-    let diaryListFetchedResultsController: NSFetchedResultsController<Diary>
+    var diaryListFetchedResultsController: NSFetchedResultsController<Diary>
     var diaryTappedCompletionHandler: ((Diary?, IndexPath?) -> Void)? = nil
     
     
@@ -73,7 +73,7 @@ extension DiaryListTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let diaryCell: DiaryListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "DiaryListTableViewCell", for: indexPath) as! DiaryListTableViewCell
+        let diaryCell: DiaryListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "diaryListCell", for: indexPath) as! DiaryListTableViewCell
         
         let diary: Diary = diaryListFetchedResultsController.object(at: indexPath)
         diaryCell.update(withDiary: diary)

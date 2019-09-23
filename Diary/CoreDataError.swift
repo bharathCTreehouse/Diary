@@ -13,6 +13,8 @@ enum CoreDataError: Error {
     
     case stackCreationFailure
     case viewContextCreationFailure
+    case saveOperationFailed
+    case fetchOperationFailure
     case unknownError
     
     var isFatalError: Bool {

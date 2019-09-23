@@ -11,7 +11,8 @@ import UIKit
 import CoreData
 
 
-class DiaryUpdateViewController: UIViewController {
+class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActionable {
+    
     
     var context: NSManagedObjectContext? = nil
     
@@ -35,6 +36,40 @@ class DiaryUpdateViewController: UIViewController {
         if context == nil {
             configureDefaultManagedObjectContext()
         }
+        navigationItem.rightBarButtonItem = rightBarbuttonItem()
+        navigationItem.leftBarButtonItem = leftBarbuttonItem()
+    }
+    
+    
+    func rightBarbuttonItem() -> UIBarButtonItem? {
+        return UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
+    }
+    
+    
+    func leftBarbuttonItem() -> UIBarButtonItem? {
+        return UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+    }
+    
+    
+    @objc func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
+        
+        do {
+            if context?.hasChanges == true {
+                //Save
+                try context?.save()
+            }
+        }
+        catch {
+            print("Save failed: \(error.localizedDescription)")
+        }
+        
+    }
+    
+    
+    @objc func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
+        
+        //Cancel/Discard
+        context?.rollback()
     }
     
     

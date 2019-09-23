@@ -18,7 +18,7 @@ extension Diary {
     }
 
     @NSManaged public var content: String?
-    @NSManaged public var modifiedDate: NSDate?
+    @NSManaged public var modifiedDate: Date?
     @NSManaged public var moodIndicator: Int16
     @NSManaged public var location: String?
     @NSManaged public var id: String?
