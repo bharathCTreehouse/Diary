@@ -2,7 +2,7 @@
 //  Photo+CoreDataProperties.swift
 //  Diary
 //
-//  Created by Bharath on 22/09/19.
+//  Created by Bharath on 01/11/19.
 //  Copyright © 2019 Bharath. All rights reserved.
 //
 //
@@ -17,8 +17,9 @@ extension Photo {
         return NSFetchRequest<Photo>(entityName: "Photo")
     }
 
-    @NSManaged public var content: NSData?
+    @NSManaged public var content: Data?
     @NSManaged public var id: String?
+    @NSManaged public var createdDate: Date
     @NSManaged public var diary: Diary?
 
 }

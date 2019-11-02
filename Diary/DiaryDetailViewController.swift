@@ -9,10 +9,33 @@
 import Foundation
 import UIKit
 import CoreData
+import Photos
 
 enum DiaryState {
+    
     case new
     case existing
+}
+
+
+enum DiaryMood: Int16 {
+    
+    case good = 0
+    case average = 1
+    case bad = 2
+    
+    var image: UIImage? {
+        
+        var nameOfImage: String = ""
+        
+        switch self {
+            case .good: nameOfImage = "happy"
+            case .average: nameOfImage = "average"
+            case .bad: nameOfImage = "bad"
+        }
+        
+        return UIImage(named: nameOfImage)
+    }
 }
 
 
@@ -21,6 +44,12 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     var diary: Diary?
     var diaryDataSavedCompletionHandler: (() -> Void)? = nil
     let diaryState: DiaryState
+    
+    var moodIndicator: DiaryMood = .good {
+        didSet {
+            moodIndicatorImageView.image = moodIndicator.image
+        }
+    }
     
     @IBOutlet weak var moodIndicatorImageView: UIImageView!
     @IBOutlet weak var diaryContentTextView: UITextView!
@@ -85,16 +114,26 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     func updateDiary() {
         
-        diary?.id = "1"
-        diary?.content = diaryContentTextView.text
-        diary?.moodIndicator = 0
-        diary?.modifiedDate = Date()
+        if diary?.id == nil {
+            diary?.id = "\(diary!.objectID)"
+        }
+        if diary?.content != diaryContentTextView.text {
+            diary?.content = diaryContentTextView.text
+        }
+        if diary?.moodIndicator != moodIndicator.rawValue {
+            diary?.moodIndicator = moodIndicator.rawValue
+        }
+        if context?.hasChanges == true {
+            diary?.modifiedDate = Date()
+        }
     }
+    
     
     
     func updateUI() {
         
         diaryContentTextView.text = diary?.content
+        moodIndicatorImageView.image = DiaryMood(rawValue: diary!.moodIndicator)?.image
     }
     
     
@@ -109,3 +148,32 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     }
     
 }
+
+
+extension DiaryDetailViewController {
+    
+    @IBAction func goodMoodButtonTapped(_ sender: UIButton) {
+        moodIndicator = .good
+    }
+    
+    @IBAction func averageMoodButtonTapped(_ sender: UIButton) {
+        moodIndicator = .average
+    }
+    
+    @IBAction func badMoodButtonTapped(_ sender: UIButton) {
+        moodIndicator = .bad
+    }
+    
+    
+    @IBAction func cameraButtonTapped(_ sender: UIBarButtonItem) {
+        
+        let imageListVC: DiaryImageListViewController = DiaryImageListViewController(withDiary: diary!)
+        navigationController?.pushViewController(imageListVC, animated: true)
+        
+    
+        
+    }
+    
+}
+
+

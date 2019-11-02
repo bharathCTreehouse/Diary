@@ -15,7 +15,7 @@ class ViewController: DiaryUpdateViewController {
     
     lazy var listFetchedResultsController: NSFetchedResultsController<Diary> = {
         
-        let diaryListFetchRequest:  NSFetchRequest<Diary> = Diary.basicFetchRequest()
+        let diaryListFetchRequest:  NSFetchRequest<Diary> = Diary.fetchRequest()
         diaryListFetchRequest.propertiesToFetch = ["content", "id", "location", "moodIndicator"]
         
         let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: false)

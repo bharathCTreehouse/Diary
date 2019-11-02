@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,31 +25,44 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLq-9u-466">
-                    <rect key="frame" x="0.0" y="768" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="763" width="375" height="49"/>
                     <items>
                         <barButtonItem title="Item" image="geoLocation" id="LlH-Mt-XIh"/>
                         <barButtonItem systemItem="flexibleSpace" id="FXV-B4-35j"/>
-                        <barButtonItem systemItem="camera" id="U77-AD-oHn"/>
+                        <barButtonItem title="Photos" id="U77-AD-oHn">
+                            <connections>
+                                <action selector="cameraButtonTapped:" destination="-1" id="9wM-ps-BW8"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                     <variation key="heightClass=compact-widthClass=regular" hidden="YES"/>
                 </toolbar>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="cLT-C4-GKb">
-                    <rect key="frame" x="0.0" y="724" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="719" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L1X-7o-H7P">
                             <rect key="frame" x="0.0" y="0.0" width="125" height="44"/>
                             <color key="backgroundColor" red="0.49019607840000001" green="0.61176470589999998" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" title=" Good" image="happy"/>
+                            <connections>
+                                <action selector="goodMoodButtonTapped:" destination="-1" eventType="touchUpInside" id="jIH-T9-bFB"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CF3-cM-Fia">
                             <rect key="frame" x="125" y="0.0" width="125" height="44"/>
                             <color key="backgroundColor" red="0.39607843139999999" green="0.39607843139999999" blue="0.39607843139999999" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" title=" Average" image="average"/>
+                            <connections>
+                                <action selector="averageMoodButtonTapped:" destination="-1" eventType="touchUpInside" id="Lt8-pQ-O6j"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nky-gj-Y0N">
                             <rect key="frame" x="250" y="0.0" width="125" height="44"/>
                             <color key="backgroundColor" red="0.8862745098" green="0.37254901959999998" blue="0.36470588240000001" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" title=" Bad" image="bad"/>
+                            <connections>
+                                <action selector="badMoodButtonTapped:" destination="-1" eventType="touchUpInside" id="DO6-om-WV1"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -75,7 +86,7 @@
                     <variation key="heightClass=compact-widthClass=regular" hidden="YES"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="odP-53-6be">
-                    <rect key="frame" x="0.0" y="212.33333333333334" width="375" height="476.66666666666663"/>
+                    <rect key="frame" x="0.0" y="212.33333333333334" width="375" height="471.66666666666663"/>
                     <color key="backgroundColor" red="0.396078431372549" green="0.396078431372549" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <string key="text">Diary content djshfjhsjdfh dsjhfjshdfjhsdjfhjkshdfjk sdhfjksdhfjhsjdkf jsdhfjkhsdjkfhjksdf jkshdjkfhdsjkhfjksdhfjkhsdjf  hjkdshjkfhsdjkhfjkdsfjhjkhjk   fjsdhjkfhsdjkhfjksd fsd f4354354 fjsdhjkfhsdjkdd</string>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -142,6 +153,7 @@
                     <include reference="sQd-oo-HKp"/>
                 </mask>
             </variation>
+            <point key="canvasLocation" x="138" y="98"/>
         </view>
     </objects>
     <resources>

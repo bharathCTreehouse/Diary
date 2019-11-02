@@ -2,7 +2,7 @@
 //  Diary+CoreDataProperties.swift
 //  Diary
 //
-//  Created by Bharath on 22/09/19.
+//  Created by Bharath on 01/11/19.
 //  Copyright © 2019 Bharath. All rights reserved.
 //
 //
@@ -13,15 +13,15 @@ import CoreData
 
 extension Diary {
 
-    @nonobjc public class func basicFetchRequest() -> NSFetchRequest<Diary> {
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Diary> {
         return NSFetchRequest<Diary>(entityName: "Diary")
     }
 
     @NSManaged public var content: String?
+    @NSManaged public var id: String?
+    @NSManaged public var location: String?
     @NSManaged public var modifiedDate: Date?
     @NSManaged public var moodIndicator: Int16
-    @NSManaged public var location: String?
-    @NSManaged public var id: String?
     @NSManaged public var photos: NSOrderedSet?
 
 }
