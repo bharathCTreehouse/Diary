@@ -8,16 +8,38 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 
 class DiaryImageListViewController: DiaryUpdateViewController {
     
     let diary: Diary
     
-    lazy var imageListViewModels: [DiaryImageListViewModel] = {
+    lazy var imageListViewModels: [ImageDetailDisplayable] = {
         
-         let imageListViewModels: [DiaryImageListViewModel] = diary.photos?.compactMap( {return DiaryImageListViewModel(withPhoto: $0 as! Photo) }) ?? []
-        return imageListViewModels
+        //On the first attempt, let us just fetch Photos with all properties except the binaryData (the actual image).
+        
+        let photoPredicate: NSPredicate = NSPredicate(format: "diary == %@", self.diary)
+        let sorter: NSSortDescriptor = NSSortDescriptor(key: "createdDate", ascending: true)
+        
+        let fetchRequest: NSFetchRequest<NSDictionary> = DiaryFetchRequestConfigurer.fetchRequestForPhoto(withPredicate: photoPredicate, sortDescriptors: [sorter], propertiesToGet: ["id", "createdDate"]) as! NSFetchRequest<NSDictionary>
+        
+        do {
+            let result: [NSDictionary]? = try self.context?.fetch(fetchRequest)
+            
+            if let result = result {
+                
+                let imageListViewModels: [DiaryImageListViewModel] = result.compactMap({ return DiaryImageListViewModel(withImageDetailDictionary: $0 as! [String: Any]) })
+                return imageListViewModels
+            }
+            
+        }
+        catch (let error) {
+            print("Error: \(error)")
+        }
+        
+        return []
+        
     }()
     
     var imageListTableView: DiaryImageListTableView? = nil
@@ -38,6 +60,13 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         
         self.view = UIView()
         self.view.backgroundColor = UIColor.white
+    }
+    
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        configureToolbar()
         
         imageListTableView = DiaryImageListTableView(withImageListViewModels: imageListViewModels)
         self.view.addSubview(imageListTableView!)
@@ -45,12 +74,6 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         imageListTableView!.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         imageListTableView!.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
         imageListTableView!.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureToolbar()
     }
     
     
@@ -147,9 +170,12 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
                         photo.id = "\(photo.objectID)"
                         photo.createdDate = Date()
                         self.diary.addToPhotos(photo)
-                        let viewModel: DiaryImageListViewModel = DiaryImageListViewModel(withPhoto: photo)
+                        let viewModel: DiaryImageListViewModel = DiaryImageListViewModel(withImageDetailDictionary: ["content":imageData, "id":"\(photo.objectID)", "createdDate":photo.createdDate])
                         self.imageListViewModels.append(viewModel)
                         self.imageListTableView?.addImageListViewModel(viewModel)
+                        
+                        //Save the image in the cache.
+                        DiaryImageCache.storeImage(imageSelected, forKey: "\(photo.objectID)" as NSString)
                     }
                     
                 }

@@ -16,9 +16,10 @@ class ViewController: DiaryUpdateViewController {
     lazy var listFetchedResultsController: NSFetchedResultsController<Diary> = {
         
         let diaryListFetchRequest:  NSFetchRequest<Diary> = Diary.fetchRequest()
-        diaryListFetchRequest.propertiesToFetch = ["content", "id", "location", "moodIndicator"]
+        diaryListFetchRequest.propertiesToFetch = ["content", "id", "location", "moodIndicator", "modifiedDate"]
+        diaryListFetchRequest.resultType = .managedObjectResultType
         
-        let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: false)
+        let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: true)
         diaryListFetchRequest.sortDescriptors = [sortDesc]
         
         let fetchedResultsCont =   NSFetchedResultsController(fetchRequest: diaryListFetchRequest, managedObjectContext: context!, sectionNameKeyPath: "modifiedDate", cacheName: nil)

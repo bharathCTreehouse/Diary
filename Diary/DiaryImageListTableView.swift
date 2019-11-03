@@ -12,10 +12,10 @@ import UIKit
 
 class DiaryImageListTableView: UITableView {
     
-    private(set) var imageListViewModels: [DiaryImageListViewModel]
+    private(set) var imageListViewModels: [ImageDetailDisplayable]
     
     
-    init(withImageListViewModels viewModels: [DiaryImageListViewModel]) {
+    init(withImageListViewModels viewModels: [ImageDetailDisplayable]) {
         
         imageListViewModels = viewModels
         super.init(frame: .zero, style: .plain)
@@ -60,7 +60,8 @@ extension DiaryImageListTableView: UITableViewDataSource {
         
         let cell: DiaryImageListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DiaryImageListTableViewCell
         
-        let imageViewModel: DiaryImageListViewModel = imageListViewModels[indexPath.row]
+        let imageViewModel: ImageDetailDisplayable = imageListViewModels[indexPath.row]
+        //let imageIdentifier: String = imageViewModel.uniqueIdentifier
         cell.update(withImageDetailDisplayable: imageViewModel)
         
         return cell

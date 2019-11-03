@@ -12,10 +12,10 @@ import UIKit
 
 class DiaryImageListViewModel {
     
-    let photo: Photo
+    let imageDetailDictionary: [String: Any]
     
-    init(withPhoto photo: Photo) {
-        self.photo = photo
+    init(withImageDetailDictionary imageDetail: [String: Any]) {
+        imageDetailDictionary = imageDetail
     }
 }
 
@@ -24,7 +24,7 @@ extension DiaryImageListViewModel: ImageDetailDisplayable {
     
     var image: UIImage? {
         
-        if let imageData = photo.content {
+        if let imageData = imageDetailDictionary["content"] as? Data {
             return UIImage(data: imageData as Data)
         }
         else {
@@ -34,20 +34,11 @@ extension DiaryImageListViewModel: ImageDetailDisplayable {
     
     
     var detail: (text: String, font: UIFont, textColor: UIColor)? {
-        
-        return (text: formattedDateString(), font: UIFont.systemFont(ofSize: 16.0), textColor: UIColor.gray)
-        
+        return (imageDetailDictionary["createdDate"] as? Date)?.diaryImageDateDetail
     }
     
     
-    func formattedDateString() -> String {
-        
-        let df: DateFormatter = DateFormatter()
-        df.locale = Locale.current
-        df.dateStyle = .medium
-        df.timeZone = .current
-        df.timeStyle = .short
-        
-        return df.string(from: photo.createdDate)
+    var uniqueIdentifier: String {
+        return (imageDetailDictionary["id"] as? String) ?? ""
     }
 }

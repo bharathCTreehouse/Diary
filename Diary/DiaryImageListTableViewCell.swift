@@ -53,7 +53,8 @@ class DiaryImageListTableViewCell: UITableViewCell {
     func update(withImageDetailDisplayable imageDetail: ImageDetailDisplayable) {
         
         
-        diaryImageView.image = imageDetail.image
+        diaryImageView.image = DiaryImageCache.image(forKey: imageDetail.uniqueIdentifier as NSString)
+        //diaryImageView.image = imageDetail.image
         diaryImageView.sizeToFit()
         
         

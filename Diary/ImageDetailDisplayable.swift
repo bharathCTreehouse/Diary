@@ -13,4 +13,5 @@ import UIKit
 protocol ImageDetailDisplayable {
     var image: UIImage? { get }
     var detail: (text: String, font: UIFont, textColor: UIColor)? { get }
+    var uniqueIdentifier: String { get }
 }
