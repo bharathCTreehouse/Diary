@@ -10,14 +10,21 @@ import Foundation
 import UIKit
 
 
+protocol DiaryImageListTableViewDelegate: class {
+    func fetchImageData(forViewModel viewModel: ImageDetailDisplayable, presentAtIndexPath idxPath: IndexPath)
+}
+
+
 class DiaryImageListTableView: UITableView {
     
     private(set) var imageListViewModels: [ImageDetailDisplayable]
+    weak private(set) var imageListDelegate: DiaryImageListTableViewDelegate? = nil
     
     
-    init(withImageListViewModels viewModels: [ImageDetailDisplayable]) {
+    init(withImageListViewModels viewModels: [ImageDetailDisplayable], delegate: DiaryImageListTableViewDelegate? = nil) {
         
         imageListViewModels = viewModels
+        imageListDelegate = delegate
         super.init(frame: .zero, style: .plain)
         translatesAutoresizingMaskIntoConstraints = false
         configure()
@@ -44,6 +51,11 @@ class DiaryImageListTableView: UITableView {
         register(DiaryImageListTableViewCell.classForCoder(), forCellReuseIdentifier: "imageCell")
     }
     
+    
+    deinit {
+        imageListDelegate = nil
+    }
+    
 }
 
 
@@ -61,8 +73,27 @@ extension DiaryImageListTableView: UITableViewDataSource {
         let cell: DiaryImageListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DiaryImageListTableViewCell
         
         let imageViewModel: ImageDetailDisplayable = imageListViewModels[indexPath.row]
-        //let imageIdentifier: String = imageViewModel.uniqueIdentifier
-        cell.update(withImageDetailDisplayable: imageViewModel)
+        let imageIdentifier: String = imageViewModel.uniqueIdentifier
+        var img: UIImage? = DiaryImageCache.image(forKey: imageIdentifier as NSString)
+        if let img = img {
+            //Image present in cache
+            cell.update(withImage: img)
+            cell.update(withDetailText: imageViewModel.detail)
+        }
+        else {
+            //Image not present in cache.
+            //Try and look for it in the view model.
+            img = imageViewModel.image
+            if img == nil {
+                //Not present in the view model.
+                //Fetch from the store.
+                imageListDelegate?.fetchImageData(forViewModel: imageViewModel, presentAtIndexPath: indexPath)
+                cell.update(withDetailText: imageViewModel.detail)
+            }
+            else {
+                cell.update(withImageDetailDisplayable: imageViewModel)
+            }
+        }
         
         return cell
         

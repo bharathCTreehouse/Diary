@@ -30,6 +30,7 @@ class DiaryImageListTableViewCell: UITableViewCell {
     func configureSubViews() {
         
         diaryImageView  = UIImageView()
+        diaryImageView.contentMode = .scaleAspectFit
         addSubview(diaryImageView)
         diaryImageView.translatesAutoresizingMaskIntoConstraints = false
         diaryImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -52,18 +53,26 @@ class DiaryImageListTableViewCell: UITableViewCell {
     
     func update(withImageDetailDisplayable imageDetail: ImageDetailDisplayable) {
         
+        update(withImage: imageDetail.image)
+        update(withDetailText: imageDetail.detail)
+    }
+    
+    
+    func update(withImage image: UIImage?) {
         
-        diaryImageView.image = DiaryImageCache.image(forKey: imageDetail.uniqueIdentifier as NSString)
-        //diaryImageView.image = imageDetail.image
+        diaryImageView.image = image
         diaryImageView.sizeToFit()
+    }
+    
+    
+    func update(withDetailText detail: (text: String, font: UIFont, textColor: UIColor)?) {
         
-        
-        if diaryImageDetailLabel.text == nil || diaryImageDetailLabel.text != imageDetail.detail?.text {
+        if diaryImageDetailLabel.text == nil || diaryImageDetailLabel.text != detail?.text {
             
             diaryImageDetailLabel.topAnchor.constraint(equalTo: diaryImageView.bottomAnchor, constant: 8.0).isActive = true
-            diaryImageDetailLabel.font = imageDetail.detail?.font
-            diaryImageDetailLabel.textColor = imageDetail.detail?.textColor
-            diaryImageDetailLabel.text = imageDetail.detail?.text
+            diaryImageDetailLabel.font = detail?.font
+            diaryImageDetailLabel.textColor = detail?.textColor
+            diaryImageDetailLabel.text = detail?.text
             diaryImageDetailLabel.textAlignment = .center
         }
     }

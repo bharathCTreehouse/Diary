@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E014D1E2370693C000BD8A1 /* DiaryImageFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E014D1D2370693C000BD8A1 /* DiaryImageFetchOperation.swift */; };
 		8E19E4F4236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19E4F3236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift */; };
 		8E554E6E233B29C7004C8170 /* ViewControllerCoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E554E6D233B29C7004C8170 /* ViewControllerCoreDataHelper.swift */; };
 		8E5D5D032368BE97004DCD90 /* DiaryImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D5D012368BE97004DCD90 /* DiaryImagePreviewViewController.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E014D1D2370693C000BD8A1 /* DiaryImageFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImageFetchOperation.swift; sourceTree = "<group>"; };
 		8E19E4F3236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryFetchRequestConfigurer.swift; sourceTree = "<group>"; };
 		8E554E6D233B29C7004C8170 /* ViewControllerCoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerCoreDataHelper.swift; sourceTree = "<group>"; };
 		8E5D5D012368BE97004DCD90 /* DiaryImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImagePreviewViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				8ED3E606236C1419003D495E /* ImageDetailDisplayable.swift */,
 				8E6F8F10236EB2D300F86A02 /* DiaryImageCache.swift */,
 				8E6F8F12236EBEAD00F86A02 /* DiaryImageListFromCacheViewModel.swift */,
+				8E014D1D2370693C000BD8A1 /* DiaryImageFetchOperation.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				8E6F8F11236EB2D300F86A02 /* DiaryImageCache.swift in Sources */,
 				8EDD2C2F23366E4400EB4738 /* CoreDataError.swift in Sources */,
 				8ED3E607236C1419003D495E /* ImageDetailDisplayable.swift in Sources */,
+				8E014D1E2370693C000BD8A1 /* DiaryImageFetchOperation.swift in Sources */,
 				8ED3E5FF236B5D5F003D495E /* DiaryImageListTableView.swift in Sources */,
 				8E6F8F13236EBEAD00F86A02 /* DiaryImageListFromCacheViewModel.swift in Sources */,
 				8E97CAF823375A2700458968 /* Photo+CoreDataProperties.swift in Sources */,

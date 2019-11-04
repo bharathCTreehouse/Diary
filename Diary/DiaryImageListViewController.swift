@@ -68,7 +68,7 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         super.viewDidLoad()
         configureToolbar()
         
-        imageListTableView = DiaryImageListTableView(withImageListViewModels: imageListViewModels)
+        imageListTableView = DiaryImageListTableView(withImageListViewModels: imageListViewModels, delegate: self)
         self.view.addSubview(imageListTableView!)
         imageListTableView!.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         imageListTableView!.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -186,4 +186,31 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
         }
     }
     
+}
+
+
+
+extension DiaryImageListViewController: DiaryImageListTableViewDelegate {
+    
+    
+    func fetchImageData(forViewModel viewModel: ImageDetailDisplayable, presentAtIndexPath idxPath: IndexPath) {
+
+        let pred: NSPredicate = NSPredicate.init(format: "id == %@", viewModel.uniqueIdentifier)
+        
+        let fetchReq: NSFetchRequest<NSDictionary> = DiaryFetchRequestConfigurer.fetchRequestForPhoto(withPredicate: pred, sortDescriptors: nil, propertiesToGet: ["content"], fetchLimit: 1) as! NSFetchRequest<NSDictionary>
+        
+        //Create operation queue and pass the fetchRequest.
+        let opQueue: OperationQueue = OperationQueue()
+        let imageOperation: DiaryImageFetchOperation = DiaryImageFetchOperation(withFetchRequest: fetchReq, inContext: self.context!, forImageViewModel: viewModel as! DiaryImageListViewModel)
+        imageOperation.completionBlock = {
+            DiaryImageCache.storeImage(viewModel.image!, forKey: viewModel.uniqueIdentifier as NSString)
+            DispatchQueue.main.async { [unowned self] () -> Void in
+                self.imageListTableView?.reloadRows(at: [idxPath], with: .automatic)
+                
+            }
+        }
+        
+        opQueue.addOperation(imageOperation)
+        
+    }
 }

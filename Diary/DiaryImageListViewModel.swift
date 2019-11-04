@@ -12,7 +12,7 @@ import UIKit
 
 class DiaryImageListViewModel {
     
-    let imageDetailDictionary: [String: Any]
+    var imageDetailDictionary: [String: Any]
     
     init(withImageDetailDictionary imageDetail: [String: Any]) {
         imageDetailDictionary = imageDetail
