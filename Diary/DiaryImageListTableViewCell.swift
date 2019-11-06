@@ -12,6 +12,7 @@ class DiaryImageListTableViewCell: UITableViewCell {
     
     private(set) var diaryImageView: UIImageView!
     private(set) var diaryImageDetailLabel: UILabel!
+    private(set) var topConstraint: NSLayoutConstraint? = nil
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -30,23 +31,24 @@ class DiaryImageListTableViewCell: UITableViewCell {
     func configureSubViews() {
         
         diaryImageView  = UIImageView()
-        diaryImageView.contentMode = .scaleAspectFit
-        addSubview(diaryImageView)
         diaryImageView.translatesAutoresizingMaskIntoConstraints = false
-        diaryImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        diaryImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        diaryImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        diaryImageView.contentMode = .scaleAspectFit
+        contentView.addSubview(diaryImageView)
+        diaryImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        diaryImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        diaryImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         diaryImageView.heightAnchor.constraint(equalToConstant: 200.0).isActive = true
-
+        
         
         diaryImageDetailLabel = UILabel()
-        addSubview(diaryImageDetailLabel)
-        
         diaryImageDetailLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.addSubview(diaryImageDetailLabel)
+        
         diaryImageDetailLabel.numberOfLines = 0
-        diaryImageDetailLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        diaryImageDetailLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8.0).isActive = true
-        diaryImageDetailLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16.0).isActive = true
+        diaryImageDetailLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        diaryImageDetailLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0).isActive = true
+        diaryImageDetailLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.0).isActive = true
     }
     
     
@@ -69,7 +71,9 @@ class DiaryImageListTableViewCell: UITableViewCell {
         
         if diaryImageDetailLabel.text == nil || diaryImageDetailLabel.text != detail?.text {
             
-            diaryImageDetailLabel.topAnchor.constraint(equalTo: diaryImageView.bottomAnchor, constant: 8.0).isActive = true
+            topConstraint?.isActive = false
+            topConstraint = diaryImageDetailLabel.topAnchor.constraint(equalTo: diaryImageView.bottomAnchor, constant: 8.0)
+            topConstraint?.isActive = true
             diaryImageDetailLabel.font = detail?.font
             diaryImageDetailLabel.textColor = detail?.textColor
             diaryImageDetailLabel.text = detail?.text

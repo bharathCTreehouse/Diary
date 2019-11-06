@@ -90,8 +90,23 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         
         let cameraBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .camera, target: self, action: #selector(cameraButtonTapped(_:)))
         
-        self.setToolbarItems([cameraBarButtonItem], animated: true)
+        let flexiSpaceBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
+        let editBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped(_:)))
+        
+        self.setToolbarItems([cameraBarButtonItem,flexiSpaceBarButtonItem, editBarButtonItem], animated: true)
+        
+    }
+    
+    
+    @objc func editButtonTapped(_ sender: UIBarButtonItem) {
+        
+        if self.imageListTableView?.isEditing == false {
+            self.imageListTableView?.setEditing(true, animated: true)
+        }
+        else {
+            self.imageListTableView?.setEditing(false, animated: true)
+        }
     }
     
     
@@ -100,8 +115,10 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         let actionSheetController: UIAlertController = UIAlertController.init(title: nil, message: "What do you wish to do?", preferredStyle: .actionSheet)
         
         
-        let cameraAction: UIAlertAction = UIAlertAction.init(title: "Take photo", style: .default, handler: { (action: UIAlertAction) -> Void in
+        let cameraAction: UIAlertAction = UIAlertAction.init(title: "Take photo", style: .default, handler: { [unowned self] (action: UIAlertAction) -> Void in
             
+            //Activate the camera.
+            self.chooseFromCamera()
         })
         actionSheetController.addAction(cameraAction)
         
@@ -148,6 +165,22 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
         present(imagePickerController, animated: true, completion: nil)
     }
     
+    
+    func chooseFromCamera() {
+        
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) == true {
+            
+            let imagePickerController: UIImagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .camera
+            imagePickerController.cameraDevice = .rear
+            present(imagePickerController, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         picker.dismiss(animated: true, completion: nil)
@@ -159,8 +192,10 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
             let previewVC: DiaryImagePreviewViewController = DiaryImagePreviewViewController(withImage: imageSelected, completionHandler: { [unowned self] (usePhoto: Bool) -> Void in
                 
                 if usePhoto == true {
+                    
+                    let scaledImage: UIImage = UIImage.init(cgImage: imageSelected.cgImage!, scale: 1.0, orientation: imageSelected.imageOrientation)
                                         
-                    let imageData: Data? = imageSelected.pngData()
+                    let imageData: Data? = scaledImage.jpegData(compressionQuality: 1.0)
                     
                     
                     if let imageData = imageData {

@@ -25,7 +25,7 @@ extension DiaryImageListViewModel: ImageDetailDisplayable {
     var image: UIImage? {
         
         if let imageData = imageDetailDictionary["content"] as? Data {
-            return UIImage(data: imageData as Data)
+            return UIImage(data: imageData as Data, scale: 1.0)
         }
         else {
             return nil
