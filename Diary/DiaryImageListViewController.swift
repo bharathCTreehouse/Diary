@@ -92,7 +92,7 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         
         let flexiSpaceBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let editBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped(_:)))
+        let editBarButtonItem: UIBarButtonItem = UIBarButtonItem.init(title: "Edit", style: .plain, target: self, action: #selector(editButtonTapped(_:)))
         
         self.setToolbarItems([cameraBarButtonItem,flexiSpaceBarButtonItem, editBarButtonItem], animated: true)
         
@@ -101,11 +101,15 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     
     @objc func editButtonTapped(_ sender: UIBarButtonItem) {
         
+        let editButton: UIBarButtonItem = toolbarItems![2]
+        
         if self.imageListTableView?.isEditing == false {
             self.imageListTableView?.setEditing(true, animated: true)
+            editButton.title = "Done"
         }
         else {
             self.imageListTableView?.setEditing(false, animated: true)
+            editButton.title = "Edit"
         }
     }
     
@@ -167,7 +171,6 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
     
     
     func chooseFromCamera() {
-        
         
         if UIImagePickerController.isSourceTypeAvailable(.camera) == true {
             
@@ -237,7 +240,9 @@ extension DiaryImageListViewController: DiaryImageListTableViewDelegate {
         //Create operation queue and pass the fetchRequest.
         let opQueue: OperationQueue = OperationQueue()
         let imageOperation: DiaryImageFetchOperation = DiaryImageFetchOperation(withFetchRequest: fetchReq, inContext: self.context!, forImageViewModel: viewModel as! DiaryImageListViewModel)
+        
         imageOperation.completionBlock = {
+            
             DiaryImageCache.storeImage(viewModel.image!, forKey: viewModel.uniqueIdentifier as NSString)
             DispatchQueue.main.async { [unowned self] () -> Void in
                 self.imageListTableView?.reloadRows(at: [idxPath], with: .automatic)
@@ -247,5 +252,12 @@ extension DiaryImageListViewController: DiaryImageListTableViewDelegate {
         
         opQueue.addOperation(imageOperation)
         
+    }
+    
+    
+    func removeImageData(presentAtIndexPath idxPath: IndexPath) {
+        
+        self.diary.removeFromPhotos(at: idxPath.row)
+        self.imageListViewModels.remove(at: idxPath.row)
     }
 }

@@ -12,6 +12,7 @@ import UIKit
 
 protocol DiaryImageListTableViewDelegate: class {
     func fetchImageData(forViewModel viewModel: ImageDetailDisplayable, presentAtIndexPath idxPath: IndexPath)
+    func removeImageData(presentAtIndexPath idxPath: IndexPath)
 }
 
 
@@ -101,6 +102,11 @@ extension DiaryImageListTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
+        if editingStyle == .delete {
+            imageListViewModels.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            imageListDelegate?.removeImageData(presentAtIndexPath: indexPath)
+        }
     }
     
     
