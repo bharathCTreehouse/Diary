@@ -77,11 +77,16 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         updateUI()
     }
     
-    
-    
+  
     @objc override func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
         updateDiary()
@@ -132,8 +137,8 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     func updateUI() {
         
-        diaryContentTextView.text = diary?.content
-        moodIndicatorImageView.image = DiaryMood(rawValue: diary!.moodIndicator)?.image
+        diaryContentTextView.text = diary?.content ?? ""
+        moodIndicator = DiaryMood(rawValue: diary!.moodIndicator)! //Image setting shall happen in didSet.
     }
     
     
@@ -167,11 +172,9 @@ extension DiaryDetailViewController {
     
     @IBAction func cameraButtonTapped(_ sender: UIBarButtonItem) {
         
-        let imageListVC: DiaryImageListViewController = DiaryImageListViewController(withDiary: diary!)
+        updateDiary()
+        let imageListVC: DiaryImageListViewController = DiaryImageListViewController(withDiary: diary!, diaryState: diaryState)
         navigationController?.pushViewController(imageListVC, animated: true)
-        
-    
-        
     }
     
 }

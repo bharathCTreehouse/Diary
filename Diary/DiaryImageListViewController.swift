@@ -17,6 +17,7 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     
     lazy var imageListViewModels: [ImageDetailDisplayable] = {
         
+        //Investigate whether this fetching can be done in a background context.
         //On the first attempt, let us just fetch Photos with all properties except the binaryData (the actual image).
         
         let photoPredicate: NSPredicate = NSPredicate(format: "diary == %@", self.diary)
@@ -43,10 +44,14 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     }()
     
     var imageListTableView: DiaryImageListTableView? = nil
+    let diaryState: DiaryState
+    var lastRemovedImageDate: Date? = nil
     
     
-    init(withDiary diary: Diary) {
+    init(withDiary diary: Diary, diaryState state: DiaryState) {
+        
         self.diary = diary
+        diaryState = state
         super.init(withContext: nil, nameOfNibToLoad: nil)
     }
     
@@ -145,7 +150,11 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     
     
     override func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
-        super.rightBarbuttonItemTapped(sender)
+        
+        updateDiaryModifiedDate()
+        if self.diary.modifiedDate != nil {
+            super.rightBarbuttonItemTapped(sender)
+        }
         navigationController?.popViewController(animated: true)
     }
     
@@ -153,6 +162,61 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     override func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         super.leftBarbuttonItemTapped(sender)
         navigationController?.popViewController(animated: true)
+    }
+    
+    
+    
+    func updateDiaryModifiedDate() {
+        
+        if let diaryModifiedDate = self.diary.modifiedDate {
+            
+            //Saved/Existing diary.
+            
+            if imageListViewModels.isEmpty == false {
+                
+                let lastAddedImageViewModel: DiaryImageListViewModel = imageListViewModels.last as! DiaryImageListViewModel
+                
+                let lastAddedImageDate: Date = lastAddedImageViewModel.imageDetailDictionary["createdDate"] as! Date
+                
+                if self.lastRemovedImageDate == nil {
+                    if lastAddedImageDate > diaryModifiedDate {
+                        diary.modifiedDate = lastAddedImageDate
+                    }
+                }
+                else {
+                    let lastModDate: Date = [lastRemovedImageDate!, lastAddedImageDate, diary.modifiedDate!].sorted().last!
+                    diary.modifiedDate = lastModDate
+                }
+                
+            }
+            else {
+                //Before doing this, check if any image was removed.
+                diary.modifiedDate = self.lastRemovedImageDate ?? Date()
+            }
+            
+        }
+        else {
+            
+            //Unsaved diary.
+            
+            if imageListViewModels.isEmpty == false {
+                
+                let lastAddedImageViewModel: DiaryImageListViewModel = imageListViewModels.last as! DiaryImageListViewModel
+                
+                let lastAddedImageDate: Date = lastAddedImageViewModel.imageDetailDictionary["createdDate"] as! Date
+                
+                //No image deleted/removed at all. So update the modified date with the last added date.
+                diary.modifiedDate = lastAddedImageDate
+                
+                if let latestImageRemovedDate = lastRemovedImageDate {
+                    //Last removed date present. Make a comparison.
+                    if latestImageRemovedDate > lastAddedImageDate {
+                        diary.modifiedDate = latestImageRemovedDate
+                    }
+                }
+            }
+            
+        }
     }
     
 }
@@ -180,6 +244,9 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
             imagePickerController.cameraDevice = .rear
             present(imagePickerController, animated: true, completion: nil)
             
+        }
+        else {
+            //Show an alert telling the user that camera capture i snot available.
         }
         
     }
@@ -235,6 +302,7 @@ extension DiaryImageListViewController: DiaryImageListTableViewDelegate {
 
         let pred: NSPredicate = NSPredicate.init(format: "id == %@", viewModel.uniqueIdentifier)
         
+        
         let fetchReq: NSFetchRequest<NSDictionary> = DiaryFetchRequestConfigurer.fetchRequestForPhoto(withPredicate: pred, sortDescriptors: nil, propertiesToGet: ["content"], fetchLimit: 1) as! NSFetchRequest<NSDictionary>
         
         //Create operation queue and pass the fetchRequest.
@@ -259,5 +327,6 @@ extension DiaryImageListViewController: DiaryImageListTableViewDelegate {
         
         self.diary.removeFromPhotos(at: idxPath.row)
         self.imageListViewModels.remove(at: idxPath.row)
+        lastRemovedImageDate = Date()
     }
 }

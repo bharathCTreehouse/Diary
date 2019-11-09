@@ -41,6 +41,18 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        context?.addObserver(self, forKeyPath: "hasChanges", options: .new, context: nil)
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        context?.removeObserver(self, forKeyPath: "hasChanges")
+    }
+    
+    
     func rightBarbuttonItem() -> UIBarButtonItem? {
         return UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
     }
@@ -71,6 +83,7 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
         //Cancel/Discard
         context?.rollback()
     }
+    
     
     
     deinit {
@@ -104,6 +117,18 @@ extension DiaryUpdateViewController {
         }
         catch {
             print("Just error")
+        }
+        
+    }
+    
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
+        if keyPath == "hasChanges" {
+            
+        }
+        else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
         
     }

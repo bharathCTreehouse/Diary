@@ -51,6 +51,8 @@ class ViewController: DiaryUpdateViewController {
     @objc override func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
         let diary: Diary = Diary(context: context!)
+        diary.id = "\(diary.objectID)"
+        diary.content = ""
         pushDetailViewController(forDiary: diary, unsavedDiary: true)
     }
     
