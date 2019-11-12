@@ -44,7 +44,8 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     }()
     
     var imageListTableView: DiaryImageListTableView? = nil
-    let diaryState: DiaryState
+    let diaryState: DiaryState  //Not being used currently. Check at a later stage and please remove.
+    
     var lastRemovedImageDate: Date? = nil
     
     
@@ -160,6 +161,7 @@ class DiaryImageListViewController: DiaryUpdateViewController {
     
     
     override func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
+        
         super.leftBarbuttonItemTapped(sender)
         navigationController?.popViewController(animated: true)
     }
@@ -246,7 +248,7 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
             
         }
         else {
-            //Show an alert telling the user that camera capture i snot available.
+            //Show an alert telling the user that camera capture is not available.
         }
         
     }

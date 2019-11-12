@@ -11,10 +11,19 @@ import UIKit
 import CoreData
 
 
+
 class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActionable {
     
     
     var context: NSManagedObjectContext? = nil
+    
+    var unsavedChangesPresent: Bool = false {
+        
+        didSet {
+            navigationItem.rightBarButtonItem = rightBarbuttonItem()
+            navigationItem.leftBarButtonItem = leftBarbuttonItem()
+        }
+    }
     
     
     init(withContext context: NSManagedObjectContext? = nil, nameOfNibToLoad nibName: String? = nil) {
@@ -54,16 +63,38 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
     
     
     func rightBarbuttonItem() -> UIBarButtonItem? {
-        return UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
+        
+        if self.unsavedChangesPresent == true {
+            return UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
+        }
+        else {
+            //return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
+            return nil
+        }
     }
     
     
     func leftBarbuttonItem() -> UIBarButtonItem? {
-        return UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+        
+        if self.unsavedChangesPresent == true {
+
+            return UIBarButtonItem.init(title: "Discard", style: .plain, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+        }
+        else {
+            //return nil
+            return UIBarButtonItem.init(title: "Back", style: .plain, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+        }
     }
     
     
     @objc func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
+        
+        saveToStore()
+        
+    }
+    
+    
+    func saveToStore() {
         
         do {
             if context?.hasChanges == true {
@@ -74,13 +105,17 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
         catch {
             print("Save failed: \(error.localizedDescription)")
         }
-        
     }
     
     
     @objc func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
         //Cancel/Discard
+        discardChanges()
+    }
+    
+    
+    func discardChanges() {
         context?.rollback()
     }
     
@@ -125,7 +160,7 @@ extension DiaryUpdateViewController {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if keyPath == "hasChanges" {
-            
+            unsavedChangesPresent = self.context!.hasChanges
         }
         else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)

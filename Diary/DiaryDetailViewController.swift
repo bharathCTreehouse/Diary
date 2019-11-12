@@ -12,7 +12,6 @@ import CoreData
 import Photos
 
 enum DiaryState {
-    
     case new
     case existing
 }
@@ -51,6 +50,7 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         }
     }
     
+    
     @IBOutlet weak var moodIndicatorImageView: UIImageView!
     @IBOutlet weak var diaryContentTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
@@ -76,20 +76,36 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        if diaryState == .new {
+            unsavedChangesPresent = true
+        }
     }
     
 
 
     override func viewWillAppear(_ animated: Bool) {
+        
         super.viewWillAppear(animated)
         updateUI()
+    }
+    
+    
+    override func leftBarbuttonItem() -> UIBarButtonItem? {
+        
+        if diaryState == .new && unsavedChangesPresent == false {
+            return UIBarButtonItem.init(barButtonSystemItem: .done, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+        }
+        else {
+            return super.leftBarbuttonItem()
+        }
     }
     
   
     @objc override func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
-        updateDiary()
+        updateDiaryWithLastModifiedDate()
         
         super.rightBarbuttonItemTapped(sender)
         
@@ -117,18 +133,9 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     
     
-    func updateDiary() {
+    func updateDiaryWithLastModifiedDate() {
         
-        if diary?.id == nil {
-            diary?.id = "\(diary!.objectID)"
-        }
-        if diary?.content != diaryContentTextView.text {
-            diary?.content = diaryContentTextView.text
-        }
-        if diary?.moodIndicator != moodIndicator.rawValue {
-            diary?.moodIndicator = moodIndicator.rawValue
-        }
-        if context?.hasChanges == true {
+        if unsavedChangesPresent == true {
             diary?.modifiedDate = Date()
         }
     }
@@ -139,6 +146,15 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         
         diaryContentTextView.text = diary?.content ?? ""
         moodIndicator = DiaryMood(rawValue: diary!.moodIndicator)! //Image setting shall happen in didSet.
+        
+        //Last modified date
+        if let modDate = self.diary?.modifiedDate {
+            
+            dateLabel.text =  DateFormatCreator.dateFormatter(withLocale: .current, dateStyle: .medium, timeStyle: .short, timeZone: .current).string(from: modDate)
+        }
+        else {
+            dateLabel.text = ""
+        }
     }
     
     
@@ -155,24 +171,74 @@ class DiaryDetailViewController: DiaryUpdateViewController {
 }
 
 
+extension DiaryDetailViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        //May have to alter the textView contentSize based on keypad size.
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        diary?.content = textView.text
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        else {
+            return true
+        }
+        
+    }
+    
+}
+
+
 extension DiaryDetailViewController {
     
     @IBAction func goodMoodButtonTapped(_ sender: UIButton) {
-        moodIndicator = .good
+        
+        if self.diary?.moodIndicator != DiaryMood.good.rawValue {
+            moodIndicator = .good
+            self.diary?.moodIndicator = moodIndicator.rawValue
+        }
     }
     
     @IBAction func averageMoodButtonTapped(_ sender: UIButton) {
-        moodIndicator = .average
+        
+        if self.diary?.moodIndicator != DiaryMood.average.rawValue {
+            moodIndicator = .average
+            self.diary?.moodIndicator = moodIndicator.rawValue
+        }
     }
     
     @IBAction func badMoodButtonTapped(_ sender: UIButton) {
-        moodIndicator = .bad
+        
+        if self.diary?.moodIndicator != DiaryMood.bad.rawValue {
+            moodIndicator = .bad
+            self.diary?.moodIndicator = moodIndicator.rawValue
+        }
     }
     
     
     @IBAction func cameraButtonTapped(_ sender: UIBarButtonItem) {
         
-        updateDiary()
+        if self.unsavedChangesPresent == false {
+            pushImageListViewController()
+        }
+        else {
+            updateDiaryWithLastModifiedDate()
+            saveToStore()
+            pushImageListViewController()
+        }
+    }
+    
+    
+    
+    func pushImageListViewController() {
+        
         let imageListVC: DiaryImageListViewController = DiaryImageListViewController(withDiary: diary!, diaryState: diaryState)
         navigationController?.pushViewController(imageListVC, animated: true)
     }
