@@ -22,7 +22,7 @@ class ViewController: DiaryUpdateViewController {
         let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: true)
         diaryListFetchRequest.sortDescriptors = [sortDesc]
         
-        let fetchedResultsCont =   NSFetchedResultsController(fetchRequest: diaryListFetchRequest, managedObjectContext: context!, sectionNameKeyPath: "modifiedDate", cacheName: nil)
+        let fetchedResultsCont =   NSFetchedResultsController(fetchRequest: diaryListFetchRequest, managedObjectContext: context!, sectionNameKeyPath: "modifiedDateStringSansTime", cacheName: nil)
         fetchedResultsCont.delegate = self
         
         return fetchedResultsCont
@@ -73,13 +73,61 @@ class ViewController: DiaryUpdateViewController {
 
 extension ViewController: NSFetchedResultsControllerDelegate {
     
-     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        print("Delegate method")
-        self.diaryListTableView?.reloadData()
+        diaryListTableView?.beginUpdates()
+    }
+    
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        if type == .insert {
+            diaryListTableView?.insertSections(IndexSet.init(integer: sectionIndex), with: .fade)
+        }
+        else if type == .update {
+            diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
+        }
+        else if type == .delete {
+            diaryListTableView?.deleteSections(IndexSet.init(integer: sectionIndex), with: .fade)
+        }
+        else if type == .move {
+            diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
+        }
+        else {
+            diaryListTableView?.reloadData()
+        }
         
     }
     
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        print("Delegate method")
+        
+        if type == .insert {
+            diaryListTableView?.insertRows(at: [newIndexPath!], with: .fade)
+        }
+        else if type == .update {
+            diaryListTableView?.reloadRows(at: [indexPath!], with: .automatic)
+        }
+        else if type == .delete {
+            diaryListTableView?.deleteRows(at: [indexPath!], with: .fade)
+        }
+        else if type == .move {
+            diaryListTableView?.moveRow(at: indexPath!, to: newIndexPath!)
+        }
+        else {
+            diaryListTableView?.reloadData()
+        }
+        
+    }
+    
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
+        diaryListTableView?.endUpdates()
+        
+    }
 }
 
 
