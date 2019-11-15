@@ -14,6 +14,8 @@ class DiaryListTableViewCell: UITableViewCell {
     @IBOutlet private weak var diaryContentLabel: UILabel!
     @IBOutlet private weak var geoLocationImageView: UIImageView!
     @IBOutlet private weak var geoLocationLabel: UILabel!
+    @IBOutlet private weak var diaryModifiedTime: UILabel!
+
 
 
     override func awakeFromNib() {
@@ -26,6 +28,7 @@ class DiaryListTableViewCell: UITableViewCell {
         
         diaryContentLabel.text = diary.content
         moodIndicatorImageView.image = DiaryMood(rawValue: diary.moodIndicator)?.image
+        diaryModifiedTime.text = diary.lastModifiedTimeString(usingTwentyFourHourFormat: false)
     }
     
     
@@ -35,6 +38,7 @@ class DiaryListTableViewCell: UITableViewCell {
         diaryContentLabel = nil
         geoLocationImageView = nil
         geoLocationLabel = nil
+        diaryModifiedTime = nil
         
     }
     

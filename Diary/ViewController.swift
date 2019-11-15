@@ -19,7 +19,7 @@ class ViewController: DiaryUpdateViewController {
         diaryListFetchRequest.propertiesToFetch = ["content", "id", "location", "moodIndicator", "modifiedDate"]
         diaryListFetchRequest.resultType = .managedObjectResultType
         
-        let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: true)
+        let sortDesc: NSSortDescriptor = NSSortDescriptor.init(key: "modifiedDate", ascending: false)
         diaryListFetchRequest.sortDescriptors = [sortDesc]
         
         let fetchedResultsCont =   NSFetchedResultsController(fetchRequest: diaryListFetchRequest, managedObjectContext: context!, sectionNameKeyPath: "modifiedDateStringSansTime", cacheName: nil)
@@ -114,7 +114,23 @@ extension ViewController: NSFetchedResultsControllerDelegate {
             diaryListTableView?.deleteRows(at: [indexPath!], with: .fade)
         }
         else if type == .move {
-            diaryListTableView?.moveRow(at: indexPath!, to: newIndexPath!)
+            
+            if indexPath! != newIndexPath! {
+                
+                //The new and old index paths are different.
+                //So let us first reorder the rows and then reload after a slight delay.
+                diaryListTableView?.moveRow(at: indexPath!, to: newIndexPath!)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self.diaryListTableView?.reloadRows(at: [newIndexPath!], with: .automatic)
+                    //self.diaryListTableView?.reloadRows(at: [indexPath!], with: .automatic)
+                }
+            }
+            else {
+                //New and old index paths the same. So no need to reorder. Just reload.
+                self.diaryListTableView?.reloadRows(at: [newIndexPath!], with: .automatic)
+            }
+            
         }
         else {
             diaryListTableView?.reloadData()
@@ -122,6 +138,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
         
     }
     
+
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
