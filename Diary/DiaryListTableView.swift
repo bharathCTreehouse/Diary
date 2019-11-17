@@ -11,16 +11,22 @@ import UIKit
 import CoreData
 
 
+enum DiaryListUserAction {
+    case tap
+    case delete
+}
+
+
 class DiaryListTableView: UITableView {
     
     var diaryListFetchedResultsController: NSFetchedResultsController<Diary>
-    var diaryTappedCompletionHandler: ((Diary?, IndexPath?) -> Void)? = nil
+    var diaryListActionCompletionHandler: ((Diary?, IndexPath?, DiaryListUserAction) -> Void)? = nil
     
     
-    required init(withFetchedResultsController controller: NSFetchedResultsController<Diary>, tapCompletionHandler handler: ((Diary?, IndexPath?) -> Void)? ) {
+    required init(withFetchedResultsController controller: NSFetchedResultsController<Diary>, tapCompletionHandler handler: ((Diary?, IndexPath?, DiaryListUserAction) -> Void)? ) {
         
         diaryListFetchedResultsController = controller
-        diaryTappedCompletionHandler = handler
+        diaryListActionCompletionHandler = handler
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
         configure()
@@ -43,8 +49,13 @@ class DiaryListTableView: UITableView {
     }
     
     
+    func toggleEditingMode() {
+        setEditing(!(isEditing), animated: true)
+    }
+    
+    
     deinit {
-        diaryTappedCompletionHandler = nil
+        diaryListActionCompletionHandler = nil
     }
 }
 
@@ -90,9 +101,21 @@ extension DiaryListTableView: UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
         let diaryTapped: Diary = diaryListFetchedResultsController.object(at: indexPath)
-        diaryTappedCompletionHandler?(diaryTapped, indexPath)
+        diaryListActionCompletionHandler?(diaryTapped, indexPath, .tap)
         
     }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let diaryTapped: Diary = diaryListFetchedResultsController.object(at: indexPath)
+            diaryListActionCompletionHandler?(diaryTapped, indexPath, .delete)
+        }
+        
+    }
+
     
 }
 

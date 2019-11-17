@@ -50,6 +50,8 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         }
     }
     
+    var locationConfigurer: DiaryLocationConfigurer? = nil
+    
     
     @IBOutlet weak var moodIndicatorImageView: UIImageView!
     @IBOutlet weak var diaryContentTextView: UITextView!
@@ -233,6 +235,63 @@ extension DiaryDetailViewController {
             saveToStore()
             pushImageListViewController()
         }
+    }
+    
+    
+    @IBAction func locationButtonTapped(_ sender: UIBarButtonItem) {
+        
+        var options: [String] = []
+        
+        if diary?.location == nil {
+            //Show option to just add.
+            options.append("Add location")
+        }
+        else {
+            //Show options to update and remove location.
+            options.append(contentsOf: ["Update location", "Remove location"])
+        }
+        
+        let alertController: UIAlertController = UIAlertController(title: nil, message: "What do you wish to do ?", preferredStyle: .actionSheet)
+        
+        
+        for (index, actionString) in options.enumerated() {
+            
+            let actionStyle: UIAlertAction.Style = (index > 0) ? UIAlertAction.Style.destructive : UIAlertAction.Style.default
+            
+            let action: UIAlertAction = UIAlertAction(title: actionString, style: actionStyle, handler: { [unowned self] (action: UIAlertAction) -> Void in
+                
+                if alertController.actions.firstIndex(of: action) == 1 {
+                    
+                    //Remove the added location from Diary.
+                    self.diary?.location = nil
+                }
+                else {
+                    
+                    //Add or overwrite location.
+                    self.locationConfigurer = DiaryLocationConfigurer(withCompletionHandler: { [unowned self] (locationStatus: DiaryLocationStatus) -> Void in
+                        
+                        switch locationStatus {
+                            
+                        case .accessRequested: print("Access requested!!") //Update location label suitably.
+                        case .accessGranted: print("Access granted!!")
+                        case .accessRejected: print("Access rejected") //Show an alert.
+                        case .currentLocation(let currentLocation): print(currentLocation)
+                        self.locationConfigurer!.endLocationFetching()
+                        case .locationError(let locError): print(locError)
+                        default: break
+                            
+                        }
+                        
+                    })
+                    self.locationConfigurer!.beginLocationFetching()
+                    
+                }
+            })
+            alertController.addAction(action)
+        }
+        
+        present(alertController, animated: true, completion: nil)
+        
     }
     
     

@@ -44,12 +44,22 @@ class ViewController: DiaryUpdateViewController {
     
     
     override func leftBarbuttonItem() -> UIBarButtonItem? {
-        return nil
+        
+        if self.diaryListTableView?.isEditing == true {
+            
+            return UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+
+        }
+        else {
+            return UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(leftBarbuttonItemTapped(_:)))
+
+        }
     }
     
     
     @objc override func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
+        //Create a new diary object.
         let diary: Diary = Diary(context: context!)
         diary.id = "\(diary.objectID)"
         diary.content = ""
@@ -59,7 +69,8 @@ class ViewController: DiaryUpdateViewController {
     
     @objc override func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
         
-        return
+        diaryListTableView?.toggleEditingMode()
+        self.navigationItem.leftBarButtonItem = self.leftBarbuttonItem()
     }
     
     
@@ -123,12 +134,13 @@ extension ViewController: NSFetchedResultsControllerDelegate {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                     self.diaryListTableView?.reloadRows(at: [newIndexPath!], with: .automatic)
-                    //self.diaryListTableView?.reloadRows(at: [indexPath!], with: .automatic)
                 }
             }
             else {
                 //New and old index paths the same. So no need to reorder. Just reload.
-                self.diaryListTableView?.reloadRows(at: [newIndexPath!], with: .automatic)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self.diaryListTableView?.reloadRows(at: [newIndexPath!], with: .automatic)
+                }
             }
             
         }
@@ -191,12 +203,33 @@ extension ViewController {
     
     func configureDiaryListTableView() {
         
-        diaryListTableView = DiaryListTableView(withFetchedResultsController: listFetchedResultsController, tapCompletionHandler: { [unowned self] (diary: Diary?, idxPath: IndexPath?) -> Void in
+        diaryListTableView = DiaryListTableView(withFetchedResultsController: listFetchedResultsController, tapCompletionHandler: { [unowned self] (diary: Diary?, idxPath: IndexPath?, userAction: DiaryListUserAction) -> Void in
             
             if let diary = diary {
                 
-                //Push the detail diary screen with the diary object.
-                self.pushDetailViewController(forDiary: diary, unsavedDiary: false)
+                if userAction == .tap {
+                    //Push the detail diary screen with the diary object.
+                    self.pushDetailViewController(forDiary: diary, unsavedDiary: false)
+                }
+                else if userAction == .delete {
+                    
+                    //Get confirmation.
+                    
+                    let alertController: UIAlertController = UIAlertController(title: "Are you sure you want this diary deleted?", message: "This action cannot be undone.", preferredStyle: .alert)
+                    
+                    let noAction: UIAlertAction = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+                    alertController.addAction(noAction)
+                    
+                    let yesAction: UIAlertAction = UIAlertAction(title: "DELETE", style: .destructive, handler: { [unowned self] (deleteAction: UIAlertAction) -> Void in
+                        
+                        self.context?.delete(diary)
+                        self.saveToStore()
+                    })
+                    alertController.addAction(yesAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                }
                 
             }
         })

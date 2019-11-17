@@ -3,7 +3,7 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +27,11 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLq-9u-466">
                     <rect key="frame" x="0.0" y="763" width="375" height="49"/>
                     <items>
-                        <barButtonItem title="Item" image="geoLocation" id="LlH-Mt-XIh"/>
+                        <barButtonItem title="Item" image="geoLocation" id="LlH-Mt-XIh">
+                            <connections>
+                                <action selector="locationButtonTapped:" destination="-1" id="h1H-2q-qU6"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="FXV-B4-35j"/>
                         <barButtonItem title="Photos" id="U77-AD-oHn">
                             <connections>

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E014D1E2370693C000BD8A1 /* DiaryImageFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E014D1D2370693C000BD8A1 /* DiaryImageFetchOperation.swift */; };
 		8E19E4F4236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19E4F3236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift */; };
+		8E2E344D238140D9008BEF0E /* DiaryLocationConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2E344C238140D9008BEF0E /* DiaryLocationConfigurer.swift */; };
 		8E554E6E233B29C7004C8170 /* ViewControllerCoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E554E6D233B29C7004C8170 /* ViewControllerCoreDataHelper.swift */; };
 		8E5D5D032368BE97004DCD90 /* DiaryImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D5D012368BE97004DCD90 /* DiaryImagePreviewViewController.swift */; };
 		8E5D5D042368BE97004DCD90 /* DiaryImagePreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E5D5D022368BE97004DCD90 /* DiaryImagePreviewViewController.xib */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		8E014D1D2370693C000BD8A1 /* DiaryImageFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImageFetchOperation.swift; sourceTree = "<group>"; };
 		8E19E4F3236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryFetchRequestConfigurer.swift; sourceTree = "<group>"; };
+		8E2E344C238140D9008BEF0E /* DiaryLocationConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLocationConfigurer.swift; sourceTree = "<group>"; };
 		8E554E6D233B29C7004C8170 /* ViewControllerCoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerCoreDataHelper.swift; sourceTree = "<group>"; };
 		8E5D5D012368BE97004DCD90 /* DiaryImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImagePreviewViewController.swift; sourceTree = "<group>"; };
 		8E5D5D022368BE97004DCD90 /* DiaryImagePreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryImagePreviewViewController.xib; sourceTree = "<group>"; };
@@ -91,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E2E344B2381407E008BEF0E /* Location_Services */ = {
+			isa = PBXGroup;
+			children = (
+				8E2E344C238140D9008BEF0E /* DiaryLocationConfigurer.swift */,
+			);
+			name = Location_Services;
+			sourceTree = "<group>";
+		};
 		8E7CB69A23281F1F00384D41 = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +182,7 @@
 		8EDD2C32233679D200EB4738 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				8E2E344B2381407E008BEF0E /* Location_Services */,
 				8E97CAFB2337726C00458968 /* DiaryDetailViewController.swift */,
 				8E97CB002337D07F00458968 /* DiaryDetailViewController.xib */,
 				8E5D5D012368BE97004DCD90 /* DiaryImagePreviewViewController.swift */,
@@ -288,6 +299,7 @@
 				8E97CAF823375A2700458968 /* Photo+CoreDataProperties.swift in Sources */,
 				8E5D5D032368BE97004DCD90 /* DiaryImagePreviewViewController.swift in Sources */,
 				8E97CAFC2337726C00458968 /* DiaryDetailViewController.swift in Sources */,
+				8E2E344D238140D9008BEF0E /* DiaryLocationConfigurer.swift in Sources */,
 				8E97CAF22336A9CC00458968 /* DiaryListTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
