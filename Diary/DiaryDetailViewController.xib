@@ -15,6 +15,7 @@
                 <outlet property="dateLabel" destination="uMo-Wi-obk" id="baH-HY-1Vu"/>
                 <outlet property="diaryContentTextView" destination="odP-53-6be" id="dmK-38-9C2"/>
                 <outlet property="goodMoodButton" destination="L1X-7o-H7P" id="LiN-gE-Nex"/>
+                <outlet property="locationLabel" destination="Acd-ZQ-nvY" id="Efs-24-rTl"/>
                 <outlet property="moodIndicatorImageView" destination="z3h-I0-86X" id="SLc-aY-bmP"/>
                 <outlet property="view" destination="y3u-IK-9wW" id="stS-kS-EJb"/>
             </connections>
@@ -90,7 +91,7 @@
                     <variation key="heightClass=compact-widthClass=regular" hidden="YES"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="odP-53-6be">
-                    <rect key="frame" x="0.0" y="209" width="375" height="475"/>
+                    <rect key="frame" x="0.0" y="214.33333333333334" width="375" height="469.66666666666663"/>
                     <color key="backgroundColor" red="0.396078431372549" green="0.396078431372549" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <string key="text">Diary content djshfjhsjdfh dsjhfjshdfjhsdjfhjkshdfjk sdhfjksdhfjhsjdkf jsdhfjkhsdjkfhjksdf jkshdjkfhdsjkhfjksdhfjkhsdjf  hjkdshjkfhsdjkhfjkdsfjhjkhjk   fjsdhjkfhsdjkhfjksd fsd f4354354 fjsdhjkfhsdjkdd</string>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,9 +101,17 @@
                         <outlet property="delegate" destination="-1" id="eIV-aO-ePf"/>
                     </connections>
                 </textView>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location unspecified" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Acd-ZQ-nvY">
+                    <rect key="frame" x="16" y="175" width="343" height="19.333333333333343"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=compact-widthClass=regular" hidden="YES"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="fkf-hO-cXe" firstAttribute="trailing" secondItem="Acd-ZQ-nvY" secondAttribute="trailing" constant="16" id="3Wh-Ow-IaE"/>
                 <constraint firstItem="aLq-9u-466" firstAttribute="leading" secondItem="fkf-hO-cXe" secondAttribute="leading" id="Cba-py-BqB"/>
                 <constraint firstItem="odP-53-6be" firstAttribute="bottom" secondItem="fkf-hO-cXe" secondAttribute="bottom" id="DuR-xe-3lw">
                     <variation key="heightClass=compact" constant="0.0"/>
@@ -111,13 +120,13 @@
                 <constraint firstItem="odP-53-6be" firstAttribute="trailing" secondItem="fkf-hO-cXe" secondAttribute="trailing" id="Pum-C1-ai9"/>
                 <constraint firstItem="uMo-Wi-obk" firstAttribute="centerX" secondItem="y3u-IK-9wW" secondAttribute="centerX" id="Q1x-9y-ZEw"/>
                 <constraint firstItem="z3h-I0-86X" firstAttribute="centerX" secondItem="y3u-IK-9wW" secondAttribute="centerX" id="TsX-oz-BlC"/>
+                <constraint firstItem="Acd-ZQ-nvY" firstAttribute="centerX" secondItem="y3u-IK-9wW" secondAttribute="centerX" id="UXN-Tg-3Bv"/>
                 <constraint firstItem="z3h-I0-86X" firstAttribute="top" secondItem="fkf-hO-cXe" secondAttribute="top" constant="16" id="V3g-CL-vc1"/>
                 <constraint firstItem="odP-53-6be" firstAttribute="leading" secondItem="fkf-hO-cXe" secondAttribute="leading" id="Vxn-td-ttT"/>
                 <constraint firstItem="aLq-9u-466" firstAttribute="top" secondItem="cLT-C4-GKb" secondAttribute="bottom" id="d05-fB-noq"/>
                 <constraint firstItem="fkf-hO-cXe" firstAttribute="trailing" secondItem="cLT-C4-GKb" secondAttribute="trailing" id="fA8-3M-jh3"/>
                 <constraint firstAttribute="bottom" secondItem="aLq-9u-466" secondAttribute="bottom" id="fhh-kY-2ph"/>
                 <constraint firstItem="uMo-Wi-obk" firstAttribute="top" secondItem="z3h-I0-86X" secondAttribute="bottom" constant="32" id="jEu-eC-MeL"/>
-                <constraint firstItem="odP-53-6be" firstAttribute="top" secondItem="uMo-Wi-obk" secondAttribute="bottom" constant="50" id="kDg-28-rAR"/>
                 <constraint firstItem="odP-53-6be" firstAttribute="bottom" secondItem="fkf-hO-cXe" secondAttribute="bottom" id="lZc-0B-4Wg">
                     <variation key="widthClass=compact" constant="0.0"/>
                 </constraint>
@@ -126,11 +135,14 @@
                 <constraint firstItem="cLT-C4-GKb" firstAttribute="top" secondItem="odP-53-6be" secondAttribute="bottom" constant="35" id="ph3-Wv-4VG">
                     <variation key="heightClass=regular" constant="35"/>
                 </constraint>
+                <constraint firstItem="odP-53-6be" firstAttribute="top" secondItem="Acd-ZQ-nvY" secondAttribute="bottom" constant="20" id="pjF-JY-2ho"/>
+                <constraint firstItem="Acd-ZQ-nvY" firstAttribute="top" secondItem="uMo-Wi-obk" secondAttribute="bottom" constant="16" id="rZr-5w-fow"/>
                 <constraint firstItem="odP-53-6be" firstAttribute="top" secondItem="fkf-hO-cXe" secondAttribute="top" id="sQd-oo-HKp">
                     <variation key="heightClass=compact" constant="0.0"/>
                 </constraint>
                 <constraint firstItem="aLq-9u-466" firstAttribute="trailing" secondItem="fkf-hO-cXe" secondAttribute="trailing" id="yNn-wo-30k"/>
                 <constraint firstItem="uMo-Wi-obk" firstAttribute="leading" secondItem="fkf-hO-cXe" secondAttribute="leading" constant="16" id="zGs-wp-rbL"/>
+                <constraint firstItem="Acd-ZQ-nvY" firstAttribute="leading" secondItem="fkf-hO-cXe" secondAttribute="leading" constant="16" id="ztb-Bm-t5E"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fkf-hO-cXe"/>
             <variation key="default">
@@ -145,8 +157,8 @@
             <variation key="heightClass=compact">
                 <mask key="constraints">
                     <include reference="DuR-xe-3lw"/>
-                    <exclude reference="kDg-28-rAR"/>
                     <include reference="onl-M1-jJe"/>
+                    <exclude reference="pjF-JY-2ho"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular">

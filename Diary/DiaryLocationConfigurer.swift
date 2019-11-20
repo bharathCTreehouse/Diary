@@ -13,9 +13,11 @@ enum DiaryLocationStatus {
     case noAccess
     case accessRequested
     case accessGranted
+    case fetchingLocation
     case accessRejected
     case currentLocation (CLLocation)
     case locationError (DiaryLocationError)
+    case notKnown
 }
 
 enum DiaryLocationError {
@@ -52,6 +54,7 @@ class DiaryLocationConfigurer: NSObject {
         }
         else if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
             
+            completionHandler(DiaryLocationStatus.fetchingLocation)
             locationManager.startUpdatingLocation()
         }
     }
@@ -112,6 +115,7 @@ extension DiaryLocationConfigurer: CLLocationManagerDelegate {
         
         if status == .authorizedAlways || status == .authorizedWhenInUse {
             
+            completionHandler(DiaryLocationStatus.accessGranted)
             beginLocationFetching()
         }
         else if status == .denied {

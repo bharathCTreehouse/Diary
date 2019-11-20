@@ -59,6 +59,8 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     @IBOutlet weak var goodMoodButton: UIButton!
     @IBOutlet weak var averageMoodButton: UIButton!
     @IBOutlet weak var badMoodButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
+
 
 
 
@@ -157,6 +159,15 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         else {
             dateLabel.text = ""
         }
+        
+        locationLabel.text = diary?.location ?? "Unspecified location"
+        
+        if diary?.location == nil {
+            locationLabel.alpha = 0.3
+        }
+        else {
+            locationLabel.alpha = 1.0
+        }
     }
     
     
@@ -168,6 +179,7 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         goodMoodButton = nil
         averageMoodButton = nil
         badMoodButton = nil
+        locationLabel = nil
     }
     
 }
@@ -263,24 +275,18 @@ extension DiaryDetailViewController {
                 if alertController.actions.firstIndex(of: action) == 1 {
                     
                     //Remove the added location from Diary.
+                    
                     self.diary?.location = nil
+                    self.updateLocationLabel(withStatus: DiaryLocationStatus.notKnown)
+
                 }
                 else {
                     
                     //Add or overwrite location.
+                    
                     self.locationConfigurer = DiaryLocationConfigurer(withCompletionHandler: { [unowned self] (locationStatus: DiaryLocationStatus) -> Void in
                         
-                        switch locationStatus {
-                            
-                        case .accessRequested: print("Access requested!!") //Update location label suitably.
-                        case .accessGranted: print("Access granted!!")
-                        case .accessRejected: print("Access rejected") //Show an alert.
-                        case .currentLocation(let currentLocation): print(currentLocation)
-                        self.locationConfigurer!.endLocationFetching()
-                        case .locationError(let locError): print(locError)
-                        default: break
-                            
-                        }
+                        self.updateLocationLabel(withStatus: locationStatus)
                         
                     })
                     self.locationConfigurer!.beginLocationFetching()
@@ -291,6 +297,43 @@ extension DiaryDetailViewController {
         }
         
         present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func updateLocationLabel(withStatus locationStatus: DiaryLocationStatus) {
+        
+        locationLabel.alpha = 1.0
+        
+        switch locationStatus {
+            
+            case .accessRequested: locationLabel.text = "Waiting for user to grant access ..."
+            
+            case .accessGranted: locationLabel.text = "Access granted. Preparing to fetch your location ..."
+            
+            case .fetchingLocation: locationLabel.text = "Fetching your location ..."
+            
+            case .accessRejected:
+                    locationLabel.text = "Location unspecified"  //Alert to be shown
+                    locationLabel.alpha = 0.3
+
+            
+            case .currentLocation(let currentLocation):
+               
+                locationConfigurer!.endLocationFetching()
+                DiaryLocationConfigurer.fetchUserReadableData(fromLocation: currentLocation, withCompletionHandler: { [unowned self] (placemarks: [CLPlacemark]?, error: Error?) -> Void in
+                    
+                    let readableInfo: DiaryLocationUserReadableInfo? = DiaryLocationUserReadableInfo(placemark: placemarks?.last)
+                    
+                    self.locationLabel.text = readableInfo?.displayableString
+                    self.diary?.location = self.locationLabel.text
+                })
+            
+                case .locationError(let locError): print(locError)
+            
+                default: locationLabel.text = "Location unspecified"
+                         locationLabel.alpha = 0.3
+        }
         
     }
     
