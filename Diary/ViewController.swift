@@ -103,7 +103,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
             diaryListTableView?.deleteSections(IndexSet.init(integer: sectionIndex), with: .fade)
         }
         else if type == .move {
-            diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
+            //diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
         }
         else {
             diaryListTableView?.reloadData()
@@ -154,7 +154,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        diaryListTableView?.endUpdates()
+        self.diaryListTableView?.endUpdates()
         
     }
 }

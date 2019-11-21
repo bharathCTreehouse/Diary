@@ -34,6 +34,7 @@
 		8E9994842338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9994832338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift */; };
 		8E9994872339505F0022E28C /* FetchedResultsControllerUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9994862339505F0022E28C /* FetchedResultsControllerUtilities.swift */; };
 		8E9A122B2328219E00947B33 /* Diary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8E9A12292328219E00947B33 /* Diary.xcdatamodeld */; };
+		8EA13F2B238702AC004A3888 /* DiaryLabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA13F2A238702AC004A3888 /* DiaryLabelExtension.swift */; };
 		8ED3E5FD236B5C5F003D495E /* DiaryImageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3E5FC236B5C5F003D495E /* DiaryImageListViewController.swift */; };
 		8ED3E5FF236B5D5F003D495E /* DiaryImageListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3E5FE236B5D5F003D495E /* DiaryImageListTableView.swift */; };
 		8ED3E602236C0681003D495E /* DiaryImageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3E600236C0681003D495E /* DiaryImageListTableViewCell.swift */; };
@@ -74,6 +75,7 @@
 		8E9994832338E49F0022E28C /* DiaryUpdateBarButtonItemConfigurer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryUpdateBarButtonItemConfigurer.swift; sourceTree = "<group>"; };
 		8E9994862339505F0022E28C /* FetchedResultsControllerUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsControllerUtilities.swift; sourceTree = "<group>"; };
 		8E9A122A2328219E00947B33 /* Diary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Diary.xcdatamodel; sourceTree = "<group>"; };
+		8EA13F2A238702AC004A3888 /* DiaryLabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryLabelExtension.swift; sourceTree = "<group>"; };
 		8ED3E5FC236B5C5F003D495E /* DiaryImageListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImageListViewController.swift; sourceTree = "<group>"; };
 		8ED3E5FE236B5D5F003D495E /* DiaryImageListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImageListTableView.swift; sourceTree = "<group>"; };
 		8ED3E600236C0681003D495E /* DiaryImageListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryImageListTableViewCell.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				8E6F8F14236EC3A300F86A02 /* DiaryImageDateUtilities.swift */,
 				8E6F8F16236EC56A00F86A02 /* DateFormatCreator.swift */,
 				8E19E4F3236EEC3700FC062D /* DiaryFetchRequestConfigurer.swift */,
+				8EA13F2A238702AC004A3888 /* DiaryLabelExtension.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 			files = (
 				8E97CAF923375A2700458968 /* Diary+CoreDataClass.swift in Sources */,
 				8E6F8F17236EC56A00F86A02 /* DateFormatCreator.swift in Sources */,
+				8EA13F2B238702AC004A3888 /* DiaryLabelExtension.swift in Sources */,
 				8E9A122B2328219E00947B33 /* Diary.xcdatamodeld in Sources */,
 				8E97CAF723375A2700458968 /* Photo+CoreDataClass.swift in Sources */,
 				8E9994872339505F0022E28C /* FetchedResultsControllerUtilities.swift in Sources */,

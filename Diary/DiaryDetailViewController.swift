@@ -303,36 +303,39 @@ extension DiaryDetailViewController {
     
     func updateLocationLabel(withStatus locationStatus: DiaryLocationStatus) {
         
-        locationLabel.alpha = 1.0
         
         switch locationStatus {
             
-            case .accessRequested: locationLabel.text = "Waiting for user to grant access ..."
+            case .accessRequested:
+                locationLabel.update(withText: .firstPriorityText(text: "Waiting for user to grant access ..."))
             
-            case .accessGranted: locationLabel.text = "Access granted. Preparing to fetch your location ..."
+            case .accessGranted:
+                locationLabel.update(withText: .firstPriorityText(text: "Access granted. Preparing to fetch your location ..."))
             
-            case .fetchingLocation: locationLabel.text = "Fetching your location ..."
-            
-            case .accessRejected:
-                    locationLabel.text = "Location unspecified"  //Alert to be shown
-                    locationLabel.alpha = 0.3
+            case .fetchingLocation:
+                locationLabel.update(withText: .firstPriorityText(text: "Fetching your location ..."))
 
-            
+            case .accessRejected:
+                    diary?.location = nil
+                    locationLabel.update(withText: .alternateText(text: "Location unspecified", alphaValue: 0.3))
+                    //Alert to be shown
+
             case .currentLocation(let currentLocation):
                
                 locationConfigurer!.endLocationFetching()
                 DiaryLocationConfigurer.fetchUserReadableData(fromLocation: currentLocation, withCompletionHandler: { [unowned self] (placemarks: [CLPlacemark]?, error: Error?) -> Void in
                     
-                    let readableInfo: DiaryLocationUserReadableInfo? = DiaryLocationUserReadableInfo(placemark: placemarks?.last)
-                    
-                    self.locationLabel.text = readableInfo?.displayableString
+                    let readableInfo: DiaryLocationUserReadableInfo = DiaryLocationUserReadableInfo(placemark: placemarks?.last)
+                    self.locationLabel.update(withText: .firstPriorityText(text: readableInfo.displayableString))
                     self.diary?.location = self.locationLabel.text
+
                 })
             
                 case .locationError(let locError): print(locError)
             
-                default: locationLabel.text = "Location unspecified"
-                         locationLabel.alpha = 0.3
+                default:
+                    diary?.location = nil
+                    locationLabel.update(withText: .alternateText(text: "Location unspecified", alphaValue: 0.3))
         }
         
     }
