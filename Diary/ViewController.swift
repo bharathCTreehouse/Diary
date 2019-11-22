@@ -93,6 +93,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
+       
         if type == .insert {
             diaryListTableView?.insertSections(IndexSet.init(integer: sectionIndex), with: .fade)
         }
@@ -100,7 +101,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
             diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
         }
         else if type == .delete {
-            diaryListTableView?.deleteSections(IndexSet.init(integer: sectionIndex), with: .fade)
+             diaryListTableView?.deleteSections(IndexSet.init(integer: sectionIndex), with: .fade)
         }
         else if type == .move {
             //diaryListTableView?.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
@@ -164,11 +165,19 @@ extension ViewController: NSFetchedResultsControllerDelegate {
 extension ViewController {
     
     
-    func fetchAllDiaryData() {
+    func fetchAllDiaryData(containingText text: String? = nil) {
         
         do {
             
+            if let text = text {
+                listFetchedResultsController.fetchRequest.predicate = NSPredicate(format: "content CONTAINS[CD] %@", text)
+            }
+            else {
+               listFetchedResultsController.fetchRequest.predicate = nil
+            }
+            
             try listFetchedResultsController.performFetch(withObserverKeyPath: "fetchedObjects")
+            
         }
         catch {
             print("Failed to perform fetch: \(error.localizedDescription)")
@@ -198,12 +207,11 @@ extension ViewController {
 }
 
 
-
 extension ViewController {
     
     func configureDiaryListTableView() {
         
-        diaryListTableView = DiaryListTableView(withFetchedResultsController: listFetchedResultsController, tapCompletionHandler: { [unowned self] (diary: Diary?, idxPath: IndexPath?, userAction: DiaryListUserAction) -> Void in
+        diaryListTableView = DiaryListTableView(withFetchedResultsController: listFetchedResultsController, searchBarDelegate: self,  tapCompletionHandler: { [unowned self] (diary: Diary?, idxPath: IndexPath?, userAction: DiaryListUserAction) -> Void in
             
             if let diary = diary {
                 
@@ -266,5 +274,13 @@ extension ViewController {
         }
     }
     
+}
+
+
+extension ViewController: DiaryListSearchBarDelegate {
+    
+    func filterResults(withText text: String?) {
+        fetchAllDiaryData(containingText: text)
+    }
 }
 

@@ -160,14 +160,7 @@ class DiaryDetailViewController: DiaryUpdateViewController {
             dateLabel.text = ""
         }
         
-        locationLabel.text = diary?.location ?? "Unspecified location"
-        
-        if diary?.location == nil {
-            locationLabel.alpha = 0.3
-        }
-        else {
-            locationLabel.alpha = 1.0
-        }
+        locationLabel.update(withText: diary?.location != nil  ? .firstPriorityText(text: diary!.location!) : .alternateText(text: "Unspecified location", alphaValue: 0.3))
     }
     
     
