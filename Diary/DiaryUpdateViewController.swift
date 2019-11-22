@@ -11,7 +11,6 @@ import UIKit
 import CoreData
 
 
-
 class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActionable {
     
     
@@ -68,7 +67,6 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
             return UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
         }
         else {
-            //return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(rightBarbuttonItemTapped(_:)))
             return nil
         }
     }
@@ -103,7 +101,8 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
             }
         }
         catch {
-            print("Save failed: \(error.localizedDescription)")
+            
+           displayAlertController(withTitle: "Save failed", message: error.localizedDescription, action: (actionTitle: "OK", actionStyle: UIAlertAction.Style.default))
         }
     }
     
@@ -118,7 +117,6 @@ class DiaryUpdateViewController: UIViewController, DiaryUpdateBarButtonItemActio
     func discardChanges() {
         context?.rollback()
     }
-    
     
     
     deinit {
@@ -138,20 +136,9 @@ extension DiaryUpdateViewController {
         do {
             self.context = try appDelegate.persistentContainerViewContext()
         }
-        catch (let error as CoreDataError) {
-            
-            if error.isFatalError == true {
-                //Show an alert and request the user to quit and relaunch the app.
-                print("Fatal error")
-            }
-            else {
-                //Just show the error.
-                print("Just error")
-            }
-            
-        }
         catch {
-            print("Just error")
+            //Show an alert and request the user to quit and relaunch the app.
+            displayAlertController(withTitle: "Failed to setup local database. Please quit and re-launch the app.", message: nil, action: (actionTitle: "OK", actionStyle: UIAlertAction.Style.default))
         }
         
     }
@@ -166,5 +153,15 @@ extension DiaryUpdateViewController {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
         
+    }
+}
+
+
+extension DiaryUpdateViewController {
+    
+    func displayAlertController(withTitle title: String?, message: String?, action: (actionTitle: String, actionStyle: UIAlertAction.Style)) {
+        
+       let alertController =  DiaryAlertController.diaryAlertController(withTitle: title, message: message, alertActions: [action], alertActionHandler: nil)
+        present(alertController, animated: true, completion: nil)
     }
 }

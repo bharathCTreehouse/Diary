@@ -88,7 +88,6 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     }
     
 
-
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
@@ -311,7 +310,9 @@ extension DiaryDetailViewController {
             case .accessRejected:
                     diary?.location = nil
                     locationLabel.update(withText: .alternateText(text: "Location unspecified", alphaValue: 0.3))
-                    //Alert to be shown
+                    displayAlertController(withTitle: "Location access denied", message: "Location usage permission is required to be able to fetch your current location. Please enable location access for this app from the settings menu.", action: (actionTitle: "OK", actionStyle: UIAlertAction.Style.default))
+                    
+                    
 
             case .currentLocation(let currentLocation):
                

@@ -180,7 +180,8 @@ extension ViewController {
             
         }
         catch {
-            print("Failed to perform fetch: \(error.localizedDescription)")
+            
+            displayAlertController(withTitle: "Data retrieval error", message: error.localizedDescription, action: (actionTitle: "OK", actionStyle: UIAlertAction.Style.default))
         }
     }
     

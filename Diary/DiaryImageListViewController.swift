@@ -254,6 +254,7 @@ extension DiaryImageListViewController: UIImagePickerControllerDelegate&UINaviga
         }
         else {
             //Show an alert telling the user that camera capture is not available.
+            displayAlertController(withTitle: "No camera", message: "Camera not present in this device. Please add photos from the photo library.", action: (actionTitle: "OK", actionStyle: UIAlertAction.Style.default))
         }
         
     }

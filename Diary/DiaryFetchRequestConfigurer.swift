@@ -25,8 +25,6 @@ class DiaryFetchRequestConfigurer {
         
     }
     
-    
-    
     static func fetchRequestForDiary(withPredicate predicate: NSPredicate?, sortDescriptors sorters: [NSSortDescriptor]? = nil, propertiesToGet properties: [String]? = nil, fetchLimit limit: Int? = nil) -> NSFetchRequest<NSFetchRequestResult> {
         
         let fetchReq: NSFetchRequest<NSFetchRequestResult> = Diary.fetchRequest()
