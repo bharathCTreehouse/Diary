@@ -13,6 +13,7 @@ import CoreData
 @objc(Diary)
 public class Diary: NSManagedObject {
     
+    
     @objc var modifiedDateStringSansTime: String {
         
         if let lastModDate = modifiedDate {
@@ -24,17 +25,6 @@ public class Diary: NSManagedObject {
         }
     }
     
-    
-    var modifiedTimeString: String {
-        
-        if let lastModDate = modifiedDate {
-            
-            return DateFormatCreator.dateFormatter(withLocale: .current, dateStyle: .full, timeStyle: .none, timeZone: .current).string(from: lastModDate)
-        }
-        else {
-            return ""
-        }
-    }
     
     func lastModifiedTimeString(usingTwentyFourHourFormat hourFormat24: Bool) -> String {
         
