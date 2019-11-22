@@ -88,8 +88,13 @@ class DiaryImageListViewController: DiaryUpdateViewController {
         navigationController?.setToolbarHidden(true, animated: false)
     }
     
-   
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setToolbarHidden(false, animated: false)
+    }
+    
+   
     func configureToolbar() {
         
         navigationController?.setToolbarHidden(false, animated: true)
