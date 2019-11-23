@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>I want to use the camera.</string>
+	<string>Permission to access your Camera is required to take photos and add them to this app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>I want to use the photo library.</string>
+	<string>Permission to access your photo library is required to add photos from it.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -46,6 +46,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please give permission dude.</string>
+	<string>Location access permission is required to fetch your current location.</string>
 </dict>
 </plist>
