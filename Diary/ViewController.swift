@@ -113,9 +113,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        print("Delegate method")
-        
+                
         if type == .insert {
             diaryListTableView?.insertRows(at: [newIndexPath!], with: .fade)
         }
@@ -264,11 +262,7 @@ extension ViewController {
         }
         else {
             
-            detailVC = DiaryDetailViewController(withDiary: diary, stateOfDiary: .new, diarySavedCompletionHandler: { [unowned self] () -> Void in
-                
-                //self.fetchAllDiaryData()
-                
-            })
+            detailVC = DiaryDetailViewController(withDiary: diary, stateOfDiary: .new)
             
             let navController: UINavigationController = UINavigationController(rootViewController: detailVC)
             present(navController, animated: true, completion: nil)

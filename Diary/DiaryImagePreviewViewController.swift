@@ -55,13 +55,20 @@ extension DiaryImagePreviewViewController: DiaryUpdateBarButtonItemActionable {
     
     
     @objc func rightBarbuttonItemTapped(_ sender: UIBarButtonItem) {
-        decisionHandler(true)
-        dismiss(animated: true, completion: nil)
+        
+        dismiss(animated: true, completion: { [unowned self] () -> Void in
+            
+            self.decisionHandler(true)
+        })
+
     }
     
     @objc func leftBarbuttonItemTapped(_ sender: UIBarButtonItem) {
-        decisionHandler(false)
-        dismiss(animated: true, completion: nil)
+        
+       dismiss(animated: true, completion: { [unowned self] () -> Void in
+        
+            self.decisionHandler(false)
+        })
     }
     
 }

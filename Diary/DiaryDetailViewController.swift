@@ -41,7 +41,6 @@ enum DiaryMood: Int16 {
 class DiaryDetailViewController: DiaryUpdateViewController {
     
     var diary: Diary?
-    var diaryDataSavedCompletionHandler: (() -> Void)? = nil
     let diaryState: DiaryState
     
     var moodIndicator: DiaryMood = .good {
@@ -63,11 +62,9 @@ class DiaryDetailViewController: DiaryUpdateViewController {
 
 
 
-
-    init(withDiary diary: Diary, context: NSManagedObjectContext? = nil, nameOfNib nib: String? = "DiaryDetailViewController", stateOfDiary state: DiaryState, diarySavedCompletionHandler completion: (() -> Void)? = nil) {
+    init(withDiary diary: Diary, context: NSManagedObjectContext? = nil, nameOfNib nib: String? = "DiaryDetailViewController", stateOfDiary state: DiaryState) {
         
         self.diary = diary
-        diaryDataSavedCompletionHandler = completion
         diaryState = state
         super.init(withContext: context, nameOfNibToLoad: nib)
     }
@@ -114,7 +111,6 @@ class DiaryDetailViewController: DiaryUpdateViewController {
         
         if diaryState == .new {
             dismiss(animated: true, completion: nil)
-            diaryDataSavedCompletionHandler?()
         }
         else {
             navigationController?.popViewController(animated: true)
@@ -164,7 +160,6 @@ class DiaryDetailViewController: DiaryUpdateViewController {
     
     
     deinit {
-        diaryDataSavedCompletionHandler = nil
         moodIndicatorImageView = nil
         diaryContentTextView = nil
         dateLabel = nil
